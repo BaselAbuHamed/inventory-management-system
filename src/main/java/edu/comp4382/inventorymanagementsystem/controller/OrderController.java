@@ -2,6 +2,7 @@ package edu.comp4382.inventorymanagementsystem.controller;
 
 import edu.comp4382.inventorymanagementsystem.dto.OrderDto;
 import edu.comp4382.inventorymanagementsystem.service.OrderService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +23,16 @@ public class OrderController {
 
     //Build Add Order Rest API
     @PostMapping
-    public ResponseEntity<OrderDto> createOrder(@RequestBody OrderDto orderDto) {
-        OrderDto savedOrder = orderService.createOrder(orderDto);
-        return new ResponseEntity<>(savedOrder, HttpStatus.CREATED);
+    public ResponseEntity<OrderDto> createOrder(@Valid @RequestBody OrderDto orderDto) {
+        try {
+            OrderDto savedOrder = orderService.createOrder(orderDto);
+            return new ResponseEntity<>(savedOrder, HttpStatus.CREATED);
+        } catch (Exception e) {
+            // Log the exception or handle it appropriately
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
+
 
     //Build Get Order By Id Rest API
     @GetMapping("/{id}")

@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,11 +20,21 @@ public class UserController {
 
     //Build Add User Rest API
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
-        UserDto savedUser = userService.createUser(userDto);
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto , BindingResult result) {
 
-        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+        if (result.hasErrors()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        try {
+            UserDto savedUser = userService.createUser(userDto);
+            return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+        } catch (Exception e) {
+            // Log the exception or handle it appropriately
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
 
     //Build Get User By Id Rest API
     @GetMapping("/{id}")
