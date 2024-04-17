@@ -2,6 +2,7 @@ package edu.comp4382.inventorymanagementsystem.controller;
 
 import edu.comp4382.inventorymanagementsystem.dto.UserDto;
 import edu.comp4382.inventorymanagementsystem.service.UserService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class UserController {
 
     //Build Add User Rest API
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
         UserDto savedUser = userService.createUser(userDto);
 
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
@@ -42,6 +43,13 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long id, @RequestBody UserDto userDto) {
         UserDto updatedUser = userService.updateUser(id, userDto);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    }
+
+    //Build Patch User Rest API
+    @PatchMapping("/{id}")
+    public ResponseEntity<UserDto> patchUser(@PathVariable("id") Long id, @RequestBody UserDto userDto) {
+        UserDto updatedUser = userService.patchUser(id, userDto);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 

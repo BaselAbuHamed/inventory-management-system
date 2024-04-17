@@ -11,10 +11,16 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class OrderDetailsMapper {
+
+
+    OrderRepository orderRepository;
+    ProductRepository productRepository;
+
     @Autowired
-    private OrderRepository orderRepository;
-    @Autowired
-    private ProductRepository productRepository;
+    public OrderDetailsMapper(OrderRepository orderRepository, ProductRepository productRepository) {
+        this.orderRepository = orderRepository;
+        this.productRepository = productRepository;
+    }
 
     public OrderDetailsDto mapOrderDetailsToDto(OrderDetails orderDetails) {
 
@@ -31,11 +37,11 @@ public class OrderDetailsMapper {
 
         Product product = productRepository.findById(orderDetailsDto.getProductId()).
                 orElseThrow(() -> new RuntimeException(
-                        "Product not found with given id : "+orderDetailsDto.getProductId()));
+                        "Product not found with given id : " + orderDetailsDto.getProductId()));
 
         Order order = orderRepository.findById(orderDetailsDto.getOrderId()).
                 orElseThrow(() -> new RuntimeException(
-                        "Order not found with given id : "+orderDetailsDto.getOrderId()));
+                        "Order not found with given id : " + orderDetailsDto.getOrderId()));
 
         orderDetails.setOrderDetailsId(orderDetailsDto.getOrderDetailsId());
         orderDetails.setOrderId(order);

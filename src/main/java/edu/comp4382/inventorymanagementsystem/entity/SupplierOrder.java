@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Setter
@@ -26,7 +27,7 @@ public class SupplierOrder {
     private Supplier supplier;
 
     @Column(name = "order_date")
-    private Date orderDate;
+    private Timestamp orderDate;
 
     @Column(name = "expected_delivery_date")
     private Date expectedDeliveryDate;

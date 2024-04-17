@@ -7,13 +7,16 @@ import edu.comp4382.inventorymanagementsystem.repository.SupplierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 @Service
 public class ProductMapper {
 
     @Autowired
     public SupplierRepository supplierRepository;
 
-    public ProductDto mapToProductDto(Product product){
+    public ProductDto mapToProductDto(Product product) {
         return new ProductDto(product.getProductId(),
                 product.getProductName(),
                 product.getProductPrice(),
@@ -24,19 +27,19 @@ public class ProductMapper {
         );
     }
 
-    public Product mapToProduct(ProductDto productDto){
+    public Product mapToProduct(ProductDto productDto) {
 
         Product product = new Product();
         Supplier supplier = supplierRepository.findById(productDto.getSupplierId())
                 .orElseThrow(() ->
                         new RuntimeException
                                 ("Supplier not found with given id : "
-                                        +productDto.getSupplierId()));
+                                        + productDto.getSupplierId()));
 
         product.setProductName(productDto.getProductName());
         product.setProductPrice(productDto.getProductPrice());
         product.setProductQuantity(productDto.getProductQuantity());
-        product.setReceivedDate(productDto.getReceivedDate());
+        product.setReceivedDate(Timestamp.valueOf(LocalDateTime.now()));
         product.setProductNumber(productDto.getProductNumber());
         product.setSupplierId(supplier);
         return product;

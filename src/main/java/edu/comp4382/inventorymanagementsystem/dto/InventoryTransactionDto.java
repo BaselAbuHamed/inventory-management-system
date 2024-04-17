@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 @Setter
 @Getter
@@ -15,7 +15,7 @@ import java.util.Date;
 public class InventoryTransactionDto {
 
     private Long inventoryTransactionId;
-    private Date transactionDate;
+    private Timestamp transactionDate;
     private String transactionType;
     private int quantity;
     private Long productId;

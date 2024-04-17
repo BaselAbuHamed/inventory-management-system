@@ -2,19 +2,23 @@ package edu.comp4382.inventorymanagementsystem.controller;
 
 import edu.comp4382.inventorymanagementsystem.dto.OrderDto;
 import edu.comp4382.inventorymanagementsystem.service.OrderService;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@AllArgsConstructor
 @RestController
 @RequestMapping("/api/order")
 public class OrderController {
 
-    private OrderService orderService;
+    OrderService orderService;
+
+    @Autowired
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
+    }
 
     //Build Add Order Rest API
     @PostMapping
@@ -35,5 +39,26 @@ public class OrderController {
     public ResponseEntity<List<OrderDto>> getAllOrders() {
         List<OrderDto> orders = orderService.getAllOrders();
         return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
+
+    //Build Update Order Rest API
+    @PutMapping("/{id}")
+    public ResponseEntity<OrderDto> updateOrder(@PathVariable("id") Long id, @RequestBody OrderDto orderDto) {
+        OrderDto updatedOrder = orderService.updateOrder(id, orderDto);
+        return new ResponseEntity<>(updatedOrder, HttpStatus.OK);
+    }
+
+    //Build Patch Order Rest API
+    @PatchMapping("/{id}")
+    public ResponseEntity<OrderDto> patchOrder(@PathVariable("id") Long id, @RequestBody OrderDto orderDto) {
+        OrderDto updatedOrder = orderService.patchOrder(id, orderDto);
+        return new ResponseEntity<>(updatedOrder, HttpStatus.OK);
+    }
+
+    //Build Delete Order Rest API
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteOrder(@PathVariable("id") Long id) {
+        orderService.deleteOrder(id);
+        return ResponseEntity.ok("Order deleted successfully.");
     }
 }

@@ -13,7 +13,7 @@ public class InventoryTransactionMapper {
     @Autowired
     private ProductRepository productRepository;
 
-    public InventoryTransactionDto mapToInventoryTransactionDto(InventoryTransaction inventoryTransaction){
+    public InventoryTransactionDto mapToInventoryTransactionDto(InventoryTransaction inventoryTransaction) {
         return new InventoryTransactionDto(inventoryTransaction.getInventoryTransactionId(),
                 inventoryTransaction.getTransactionDate(),
                 inventoryTransaction.getTransactionType(),
@@ -22,11 +22,11 @@ public class InventoryTransactionMapper {
         );
     }
 
-    public InventoryTransaction mapToInventoryTransaction(InventoryTransactionDto inventoryTransactionDto){
+    public InventoryTransaction mapToInventoryTransaction(InventoryTransactionDto inventoryTransactionDto) {
         InventoryTransaction inventoryTransaction = new InventoryTransaction();
         Product product = productRepository.findById(inventoryTransactionDto.getProductId()).
                 orElseThrow(() -> new RuntimeException(
-                        "Product not found with given id : "+inventoryTransactionDto.getProductId()));
+                        "Product not found with given id : " + inventoryTransactionDto.getProductId()));
         inventoryTransaction.setInventoryTransactionId(inventoryTransactionDto.getInventoryTransactionId());
         inventoryTransaction.setTransactionDate(inventoryTransactionDto.getTransactionDate());
         inventoryTransaction.setTransactionType(inventoryTransactionDto.getTransactionType());

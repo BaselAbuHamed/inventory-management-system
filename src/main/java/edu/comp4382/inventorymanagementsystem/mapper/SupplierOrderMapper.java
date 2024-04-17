@@ -10,10 +10,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class SupplierOrderMapper {
 
-    @Autowired
-    public SupplierRepository supplierRepository;
+    SupplierRepository supplierRepository;
 
-    public SupplierOrderDto mapToSupplierOrderDto(SupplierOrder supplierOrder){
+    @Autowired
+    public SupplierOrderMapper(SupplierRepository supplierRepository) {
+        this.supplierRepository = supplierRepository;
+    }
+
+    public SupplierOrderDto mapToSupplierOrderDto(SupplierOrder supplierOrder) {
         return new SupplierOrderDto(supplierOrder.getSupplierOrderId(),
                 supplierOrder.getSupplier().getSupplierId(),
                 supplierOrder.getOrderDate(),
@@ -22,14 +26,14 @@ public class SupplierOrderMapper {
         );
     }
 
-    public SupplierOrder mapToSupplierOrder(SupplierOrderDto supplierOrderDto){
+    public SupplierOrder mapToSupplierOrder(SupplierOrderDto supplierOrderDto) {
 
         SupplierOrder supplierOrder = new SupplierOrder();
         Supplier supplier = supplierRepository.findById(supplierOrderDto.getSupplierId())
                 .orElseThrow(() ->
                         new RuntimeException
                                 ("Supplier not found with given id : "
-                                        +supplierOrderDto.getSupplierId()));
+                                        + supplierOrderDto.getSupplierId()));
 
         supplierOrder.setOrderDate(supplierOrderDto.getOrderDate());
         supplierOrder.setSupplier(supplier);

@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 @Setter
 @Getter
@@ -22,7 +22,7 @@ public class InventoryTransaction {
     private Long inventoryTransactionId;
 
     @Column(name = "transaction_date")
-    private Date transactionDate;
+    private Timestamp transactionDate;
 
     @Column(name = "transaction_type")
     private String transactionType;
