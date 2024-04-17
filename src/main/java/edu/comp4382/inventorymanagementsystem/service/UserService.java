@@ -6,6 +6,8 @@ import org.apache.catalina.LifecycleState;
 import java.util.List;
 
 public interface UserService {
+
+
     UserDto createUser(UserDto userDto);
 
     UserDto getUserById(Long id);

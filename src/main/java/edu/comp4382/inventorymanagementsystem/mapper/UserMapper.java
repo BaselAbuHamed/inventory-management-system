@@ -5,14 +5,14 @@ import edu.comp4382.inventorymanagementsystem.entity.User;
 
 public class UserMapper {
     public static UserDto mapToUserDto (User user){
-        return new UserDto(user.getId(),
+        return new UserDto(user.getUserId(),
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword());
     }
 
     public static User mapToUser (UserDto userDto){
-        return new User(userDto.getId(),
+        return new User(userDto.getUserId(),
                 userDto.getUsername(),
                 userDto.getEmail(),
                 userDto.getPassword());

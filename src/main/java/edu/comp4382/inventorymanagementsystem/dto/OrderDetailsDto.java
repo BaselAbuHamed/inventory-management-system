@@ -10,9 +10,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class UserDto {
-    private Long userId;
-    private String username;
-    private String email;
-    private String password;
+public class OrderDetailsDto {
+
+    private Long orderDetailsId;
+    private Long orderId;
+    private int quantity;
+    private double price;
+    private Long productId;
 }

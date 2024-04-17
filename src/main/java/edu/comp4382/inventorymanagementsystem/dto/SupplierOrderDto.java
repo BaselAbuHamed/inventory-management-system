@@ -5,14 +5,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class UserDto {
-    private Long userId;
-    private String username;
-    private String email;
-    private String password;
+public class SupplierOrderDto {
+
+    private Long supplierOrderId;
+    private Long supplierId;
+    private Date orderDate;
+    private Date expectedDeliveryDate;
+    private String status;
 }
