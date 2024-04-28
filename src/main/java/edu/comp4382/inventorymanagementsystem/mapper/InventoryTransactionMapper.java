@@ -5,13 +5,18 @@ import edu.comp4382.inventorymanagementsystem.entity.InventoryTransaction;
 import edu.comp4382.inventorymanagementsystem.entity.Product;
 import edu.comp4382.inventorymanagementsystem.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service
+@Component
 public class InventoryTransactionMapper {
 
+    private final ProductRepository productRepository;
+
     @Autowired
-    private ProductRepository productRepository;
+    public InventoryTransactionMapper(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     public InventoryTransactionDto mapToInventoryTransactionDto(InventoryTransaction inventoryTransaction) {
         return new InventoryTransactionDto(inventoryTransaction.getInventoryTransactionId(),

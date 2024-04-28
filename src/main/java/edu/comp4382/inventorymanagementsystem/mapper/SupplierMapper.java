@@ -2,9 +2,10 @@ package edu.comp4382.inventorymanagementsystem.mapper;
 
 import edu.comp4382.inventorymanagementsystem.dto.SupplierDto;
 import edu.comp4382.inventorymanagementsystem.entity.Supplier;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service
+@Component
 public class SupplierMapper {
 
     public SupplierDto mapToSupplierDto(Supplier supplier) {

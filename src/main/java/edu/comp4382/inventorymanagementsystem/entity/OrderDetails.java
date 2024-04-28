@@ -1,6 +1,7 @@
 package edu.comp4382.inventorymanagementsystem.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,15 +21,19 @@ public class OrderDetails {
 
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
+    @NotNull(message = "Order must be provided")
     private Order orderId;
 
     @Column(name = "quantity", nullable = false)
-    private int quantity;
+    @NotNull(message = "Quantity must be provided")
+    private Integer quantity;
 
     @Column(name = "price", nullable = false)
+    @NotNull(message = "Price must be provided")
     private double price;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
+    @NotNull(message = "Product must be provided")
     private Product productId;
 }

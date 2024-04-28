@@ -2,6 +2,7 @@ package edu.comp4382.inventorymanagementsystem.service.impl;
 
 import edu.comp4382.inventorymanagementsystem.dto.SupplierDto;
 import edu.comp4382.inventorymanagementsystem.entity.Supplier;
+import edu.comp4382.inventorymanagementsystem.exception.ResourceNotFoundException;
 import edu.comp4382.inventorymanagementsystem.mapper.SupplierMapper;
 import edu.comp4382.inventorymanagementsystem.repository.SupplierRepository;
 import edu.comp4382.inventorymanagementsystem.service.SupplierService;
@@ -32,7 +33,7 @@ public class SupplierServiceImpl implements SupplierService {
     public SupplierDto getSupplierById(Long id) {
         Supplier supplier = supplierRepository.findById(id).
                 orElseThrow(() ->
-                        new RuntimeException
+                        new ResourceNotFoundException
                                 ("Supplier not found with given id : " + id));
         return supplierMapper.mapToSupplierDto(supplier);
     }
@@ -41,7 +42,7 @@ public class SupplierServiceImpl implements SupplierService {
     public SupplierDto updateSupplier(Long id, SupplierDto supplierDto) {
         Supplier supplier = supplierRepository.findById(id).
                 orElseThrow(() ->
-                        new RuntimeException
+                        new ResourceNotFoundException
                                 ("Supplier not found with given id : " + id));
 
         supplier.setSupplierName(supplierDto.getSupplierName());
@@ -58,7 +59,7 @@ public class SupplierServiceImpl implements SupplierService {
 
         Supplier supplier = supplierRepository.findById(id).
                 orElseThrow(() ->
-                        new RuntimeException
+                        new ResourceNotFoundException
                                 ("Supplier not found with given id : " + id));
 
         if (supplierDto.getSupplierName() != null) {
@@ -90,6 +91,16 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public void deleteSupplier(Long id) {
-        supplierRepository.deleteById(id);
+
+        //updated
+        if (!supplierRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Supplier not found with given id : " + id);
+        }
+
+        try {
+            supplierRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Supplier not found with given id : " + id);
+        }
     }
 }

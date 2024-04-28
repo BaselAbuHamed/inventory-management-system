@@ -5,16 +5,21 @@ import edu.comp4382.inventorymanagementsystem.entity.Product;
 import edu.comp4382.inventorymanagementsystem.entity.Supplier;
 import edu.comp4382.inventorymanagementsystem.repository.SupplierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-@Service
+@Component
 public class ProductMapper {
 
+    private final SupplierRepository supplierRepository;
+
     @Autowired
-    public SupplierRepository supplierRepository;
+    public ProductMapper(SupplierRepository supplierRepository) {
+        this.supplierRepository = supplierRepository;
+    }
 
     public ProductDto mapToProductDto(Product product) {
         return new ProductDto(product.getProductId(),

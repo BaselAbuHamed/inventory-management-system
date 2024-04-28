@@ -7,14 +7,15 @@ import edu.comp4382.inventorymanagementsystem.entity.Product;
 import edu.comp4382.inventorymanagementsystem.repository.OrderRepository;
 import edu.comp4382.inventorymanagementsystem.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service
+@Component
 public class OrderDetailsMapper {
 
 
-    OrderRepository orderRepository;
-    ProductRepository productRepository;
+    private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
 
     @Autowired
     public OrderDetailsMapper(OrderRepository orderRepository, ProductRepository productRepository) {

@@ -3,8 +3,10 @@ package edu.comp4382.inventorymanagementsystem.controller;
 import edu.comp4382.inventorymanagementsystem.dto.ProductDto;
 import edu.comp4382.inventorymanagementsystem.service.ProductService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +17,7 @@ public class ProductController {
 
     ProductService productService;
 
+    @Autowired
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
@@ -22,8 +25,14 @@ public class ProductController {
     //Build Add Product Rest API
     @PostMapping
     public ResponseEntity<ProductDto> createProduct(@Valid @RequestBody ProductDto productDto) {
-        ProductDto savedProduct = productService.createProduct(productDto);
-        return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
+
+        try {
+            ProductDto savedProduct = productService.createProduct(productDto);
+            return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
+        } catch (Exception e) {
+            // Log the exception or handle it appropriately
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     //Build Get Product By Id Rest API

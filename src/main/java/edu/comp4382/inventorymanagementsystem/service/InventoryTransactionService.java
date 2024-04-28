@@ -1,6 +1,7 @@
 package edu.comp4382.inventorymanagementsystem.service;
 
 import edu.comp4382.inventorymanagementsystem.dto.InventoryTransactionDto;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 

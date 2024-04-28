@@ -5,12 +5,13 @@ import edu.comp4382.inventorymanagementsystem.entity.Supplier;
 import edu.comp4382.inventorymanagementsystem.entity.SupplierOrder;
 import edu.comp4382.inventorymanagementsystem.repository.SupplierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service
+@Component
 public class SupplierOrderMapper {
 
-    SupplierRepository supplierRepository;
+    private final SupplierRepository supplierRepository;
 
     @Autowired
     public SupplierOrderMapper(SupplierRepository supplierRepository) {

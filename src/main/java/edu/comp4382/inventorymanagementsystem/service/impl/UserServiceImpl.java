@@ -2,9 +2,11 @@ package edu.comp4382.inventorymanagementsystem.service.impl;
 
 import edu.comp4382.inventorymanagementsystem.dto.UserDto;
 import edu.comp4382.inventorymanagementsystem.entity.User;
+import edu.comp4382.inventorymanagementsystem.exception.ResourceNotFoundException;
 import edu.comp4382.inventorymanagementsystem.mapper.UserMapper;
 import edu.comp4382.inventorymanagementsystem.repository.UserRepository;
 import edu.comp4382.inventorymanagementsystem.service.UserService;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,7 +32,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUserById(Long id) {
         User user = userRepository.findById(id).
-                orElseThrow(() -> new RuntimeException("User not found with given id : " + id));
+                orElseThrow(() ->
+                        new ResourceNotFoundException
+                                ("User not found with given id : " + id));
         return UserMapper.mapToUserDto(user);
     }
 
@@ -47,7 +51,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto updateUser(Long id, UserDto userDto) {
         User user = userRepository.findById(id).
-                orElseThrow(() -> new RuntimeException("User not found with given id : " + id));
+                orElseThrow(() ->
+                        new ResourceNotFoundException
+                                ("User not found with given id : " + id));
 
         user.setUsername(userDto.getUsername());
         user.setEmail(userDto.getEmail());
@@ -61,7 +67,9 @@ public class UserServiceImpl implements UserService {
     public UserDto patchUser(Long id, UserDto userDto) {
 
         User user = userRepository.findById(id).
-                orElseThrow(() -> new RuntimeException("User not found with given id : " + id));
+                orElseThrow(() ->
+                        new ResourceNotFoundException
+                                ("User not found with given id : " + id));
 
         // Update only the non-null fields from the userDto
         if (userDto.getUsername() != null) {
@@ -82,9 +90,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(Long id) {
 
-        User user = userRepository.findById(id).
-                orElseThrow(() -> new RuntimeException("User not found with given id : " + id));
+        //updated
+        if (!userRepository.existsById(id)) {
+            throw new ResourceNotFoundException("User not found with given id: " + id);
+        }
 
-        userRepository.deleteById(id);
+        try {
+            userRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException("User not found with given id: " + id);
+        }
     }
 }

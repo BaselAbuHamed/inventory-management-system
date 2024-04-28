@@ -2,9 +2,11 @@ package edu.comp4382.inventorymanagementsystem.service.impl;
 
 import edu.comp4382.inventorymanagementsystem.dto.InventoryTransactionDto;
 import edu.comp4382.inventorymanagementsystem.service.InventoryTransactionService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class InventoryTransactionServiceImpl implements InventoryTransactionService {
     @Override
     public InventoryTransactionDto createInventoryTransaction(InventoryTransactionDto inventoryTransactionDto) {

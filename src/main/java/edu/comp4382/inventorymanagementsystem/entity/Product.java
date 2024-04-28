@@ -1,6 +1,9 @@
 package edu.comp4382.inventorymanagementsystem.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +15,6 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-
 @Entity
 @Table(name = "product")
 public class Product {
@@ -21,23 +23,30 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
 
-    @Column(name = "product_name")
+    @NotBlank(message = "Product name is required")
+    @Column(name = "product_name", nullable = false)
     private String productName;
 
-    @Column(name = "product_price")
-    private double productPrice;
+    @NotNull(message = "Product price is required")
+    @Positive(message = "Product price must be positive")
+    @Column(name = "product_price", nullable = false)
+    private Double productPrice;
 
-    @Column(name = "product_quantity")
-    private int productQuantity;
+    @NotNull(message = "Product quantity is required")
+    @Positive(message = "Product quantity must be positive")
+    @Column(name = "product_quantity", nullable = false)
+    private Integer productQuantity;
 
-    @Column(name = "received_date")
+    @NotNull(message = "Received date is required")
+    @Column(name = "received_date", nullable = false)
     private Date receivedDate;
 
-    @Column(name = "product_number")
+    @NotBlank(message = "Product number is required")
+    @Column(name = "product_number", nullable = false)
     private String productNumber;
 
+    @NotNull(message = "Supplier is required")
     @ManyToOne
     @JoinColumn(name = "supplier_id", nullable = false)
     private Supplier supplierId;
-
 }

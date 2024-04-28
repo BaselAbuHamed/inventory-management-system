@@ -2,6 +2,7 @@ package edu.comp4382.inventorymanagementsystem.service.impl;
 
 import edu.comp4382.inventorymanagementsystem.dto.OrderDetailsDto;
 import edu.comp4382.inventorymanagementsystem.entity.OrderDetails;
+import edu.comp4382.inventorymanagementsystem.exception.ResourceNotFoundException;
 import edu.comp4382.inventorymanagementsystem.mapper.OrderDetailsMapper;
 import edu.comp4382.inventorymanagementsystem.repository.OrderDetailsRepository;
 import edu.comp4382.inventorymanagementsystem.service.OrderDetailsService;
@@ -35,7 +36,7 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
     public OrderDetailsDto getOrderDetailsById(Long id) {
         OrderDetails orderDetails = orderDetailsRepository.findById(id).
                 orElseThrow(() ->
-                        new RuntimeException
+                        new ResourceNotFoundException //edited
                                 ("Order Details not found with given id : " + id));
         return orderDetailsMapper.mapOrderDetailsToDto(orderDetails);
     }
@@ -55,7 +56,7 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 
         OrderDetails orderDetails = orderDetailsRepository.findById(id).
                 orElseThrow(() ->
-                        new RuntimeException
+                        new ResourceNotFoundException //edited
                                 ("Order Details not found with given id : " + id));
 
         orderDetails.setPrice(orderDetailsDto.getPrice());
@@ -68,7 +69,9 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
     @Override
     public OrderDetailsDto patchOrderDetails(Long id, OrderDetailsDto orderDetailsDto) {
         OrderDetails orderDetails = orderDetailsRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Order Details not found with given id : " + id));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException //edited
+                                ("Order Details not found with given id : " + id));
 
         if (!Double.isNaN(orderDetailsDto.getPrice())) {
             orderDetails.setPrice(orderDetailsDto.getPrice());
@@ -85,6 +88,16 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 
     @Override
     public void deleteOrderDetails(Long id) {
-        orderDetailsRepository.deleteById(id);
+
+        //updated
+        if (!orderDetailsRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Order Details not found with given id : " + id);
+        }
+
+        try {
+            orderDetailsRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Order Details not found with given id : " + id);
+        }
     }
 }

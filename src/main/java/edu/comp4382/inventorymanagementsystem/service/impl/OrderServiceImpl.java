@@ -2,6 +2,7 @@ package edu.comp4382.inventorymanagementsystem.service.impl;
 
 import edu.comp4382.inventorymanagementsystem.dto.OrderDto;
 import edu.comp4382.inventorymanagementsystem.entity.Order;
+import edu.comp4382.inventorymanagementsystem.exception.ResourceNotFoundException;
 import edu.comp4382.inventorymanagementsystem.mapper.OrderMapper;
 import edu.comp4382.inventorymanagementsystem.repository.OrderRepository;
 import edu.comp4382.inventorymanagementsystem.service.OrderService;
@@ -35,7 +36,9 @@ public class OrderServiceImpl implements OrderService {
     public OrderDto getOrderById(Long orderId) {
 
         Order order = orderRepository.findById(orderId).
-                orElseThrow(() -> new RuntimeException("Order not found with given id : " + orderId));
+                orElseThrow(() ->
+                        new ResourceNotFoundException //edited
+                                ("Order not found with given id : " + orderId));
 
         return orderMapper.mapToOrderDto(order);
     }
@@ -53,7 +56,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDto updateOrder(Long orderId, OrderDto orderDto) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found with given id : " + orderId));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException //edited
+                                ("Order not found with given id : " + orderId));
 
         order.setOrderDate(orderDto.getOrderDate());
         order.setTotalAmount(orderDto.getTotalAmount());
@@ -65,7 +70,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDto patchOrder(Long orderId, OrderDto orderDto) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found with given id : " + orderId));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException //edited
+                                ("Order not found with given id : " + orderId));
 
         if (orderDto.getOrderDate() != null) {
             order.setOrderDate(orderDto.getOrderDate());
@@ -84,6 +91,16 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void deleteOrder(Long orderId) {
-        orderRepository.deleteById(orderId);
+
+        //updated
+        if (!orderRepository.existsById(orderId)) {
+            throw new ResourceNotFoundException("Order not found with given id : " + orderId);
+        }
+
+        try {
+            orderRepository.deleteById(orderId);
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Order not found with given id : " + orderId);
+        }
     }
 }

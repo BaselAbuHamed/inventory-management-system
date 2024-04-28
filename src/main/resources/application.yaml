@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: InventoryManagementSystem
+  datasource:
+    url: jdbc:postgresql://localhost:5432/inventory_management_system
+    username: postgres
+    password: 1232002
+  jpa:
+    hibernate:
+      ddl-auto: update
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.PostgreSQLDialect
+          format_sql: true
+server:
+  error:
+    include-message: never

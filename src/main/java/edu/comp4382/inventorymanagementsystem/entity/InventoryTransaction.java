@@ -1,10 +1,8 @@
 package edu.comp4382.inventorymanagementsystem.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
 import java.sql.Timestamp;
 
@@ -22,16 +20,20 @@ public class InventoryTransaction {
     private Long inventoryTransactionId;
 
     @Column(name = "transaction_date")
+    @NotNull(message = "Transaction date must be provided")
     private Timestamp transactionDate;
 
     @Column(name = "transaction_type")
+    @NotNull(message = "Transaction type must be provided")
     private String transactionType;
 
-    @Column(name = "quantity")
-    private int quantity;
+    @Column(name = "quantity" )
+    @NotNull(message = "Quantity must be provided")
+    private Integer quantity;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
+    @NotNull(message = "Product must be provided")
     private Product productId;
 
 }

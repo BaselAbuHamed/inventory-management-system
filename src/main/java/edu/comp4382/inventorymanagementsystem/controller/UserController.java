@@ -7,9 +7,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @RestController
@@ -20,20 +23,16 @@ public class UserController {
 
     //Build Add User Rest API
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto , BindingResult result) {
-
-        if (result.hasErrors()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto user) {
 
         try {
-            UserDto savedUser = userService.createUser(userDto);
-            return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+            UserDto createdUser = userService.createUser(user);
+            return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
         } catch (Exception e) {
-            // Log the exception or handle it appropriately
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
 
     //Build Get User By Id Rest API
@@ -66,7 +65,8 @@ public class UserController {
 
     //Build Delete User Rest API
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable("id") Long id) {
+    public ResponseEntity<String> deleteUser(@Valid @PathVariable("id") Long id) {
+
         userService.deleteUser(id);
         return ResponseEntity.ok("User deleted successfully.");
     }

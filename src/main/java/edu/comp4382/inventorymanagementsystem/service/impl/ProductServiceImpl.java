@@ -2,6 +2,7 @@ package edu.comp4382.inventorymanagementsystem.service.impl;
 
 import edu.comp4382.inventorymanagementsystem.dto.ProductDto;
 import edu.comp4382.inventorymanagementsystem.entity.Product;
+import edu.comp4382.inventorymanagementsystem.exception.ResourceNotFoundException;
 import edu.comp4382.inventorymanagementsystem.mapper.ProductMapper;
 import edu.comp4382.inventorymanagementsystem.repository.ProductRepository;
 import edu.comp4382.inventorymanagementsystem.service.ProductService;
@@ -34,7 +35,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductDto getProductById(Long id) {
         Product product = productRepository.findById(id).
                 orElseThrow(() ->
-                        new RuntimeException
+                        new ResourceNotFoundException //edited
                                 ("Product not found with given id : " + id));
         return productMapper.mapToProductDto(product);
     }
@@ -53,7 +54,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductDto updateProduct(Long id, ProductDto productDto) {
         Product product = productRepository.findById(id).
                 orElseThrow(() ->
-                        new RuntimeException
+                        new ResourceNotFoundException //edited
                                 ("Product not found with given id : " + id));
 
         product.setProductName(productDto.getProductName());
@@ -94,10 +95,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(Long id) {
-        Product product = productRepository.findById(id).
-                orElseThrow(() ->
-                        new RuntimeException
-                                ("Product not found with given id : " + id));
-        productRepository.deleteById(id);
+
+        //updated
+        if (!productRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Product not found with given id : " + id);
+        }
+
+        try {
+            productRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Product not found with given id : " + id);
+        }
     }
 }

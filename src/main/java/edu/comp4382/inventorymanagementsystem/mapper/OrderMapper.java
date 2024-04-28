@@ -4,16 +4,19 @@ import edu.comp4382.inventorymanagementsystem.dto.OrderDto;
 import edu.comp4382.inventorymanagementsystem.entity.Order;
 import edu.comp4382.inventorymanagementsystem.entity.User;
 import edu.comp4382.inventorymanagementsystem.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-@Service
+@Component
 public class OrderMapper {
 
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
+    @Autowired
     public OrderMapper(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
